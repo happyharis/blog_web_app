@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'home_page.dart';
 
@@ -31,10 +32,13 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: theme,
-      home: HomePage(),
+    return Provider<String>(
+      create: (context) => 'What is provider?',
+      child: MaterialApp(
+        title: 'Flutter Dev Blog',
+        theme: theme,
+        home: HomePage(),
+      ),
     );
   }
 }

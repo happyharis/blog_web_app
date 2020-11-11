@@ -1,5 +1,6 @@
 import 'package:blog_web_app/constrained_centre.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -50,13 +51,14 @@ class HomePage extends StatelessWidget {
 class BlogListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final title = Provider.of<String>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 20),
         InkWell(
           child: Text(
-            'What is provider?',
+            title,
             style: TextStyle(color: Colors.blueAccent.shade700),
           ),
           onTap: () {},
