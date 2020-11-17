@@ -3,26 +3,27 @@ import 'package:blog_web_app/blog_post.dart';
 import 'package:blog_web_app/blog_scaffold.dart';
 import 'package:blog_web_app/constrained_centre.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+
+import 'user.dart';
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final posts = Provider.of<List<BlogPost>>(context);
+    final user = Provider.of<User>(context);
     return BlogScaffold(
       children: [
         ConstrainedCentre(
           child: CircleAvatar(
-            backgroundImage:
-                NetworkImage('https://i.ibb.co/ZKkSW4H/profile-image.png'),
+            backgroundImage: NetworkImage(user.profilePicture),
             radius: 72,
           ),
         ),
         SizedBox(height: 18),
         ConstrainedCentre(
           child: SelectableText(
-            'Flutter Dev',
+            user.name,
             style: Theme.of(context).textTheme.headline1,
           ),
         ),

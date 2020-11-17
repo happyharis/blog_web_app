@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'home_page.dart';
+import 'user.dart';
 
 var theme = ThemeData(
   primarySwatch: Colors.blue,
@@ -36,6 +37,11 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider<List<BlogPost>>(create: (context) => _blogPosts),
+        Provider<User>(
+          create: (context) => User(
+              name: 'Flutter Dev',
+              profilePicture: 'https://i.ibb.co/ZKkSW4H/profile-image.png'),
+        )
       ],
       child: MaterialApp(
         title: 'Flutter Dev Blog',
