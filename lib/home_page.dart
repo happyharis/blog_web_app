@@ -1,4 +1,6 @@
+import 'package:blog_web_app/blog_page.dart';
 import 'package:blog_web_app/blog_post.dart';
+import 'package:blog_web_app/blog_scaffold.dart';
 import 'package:blog_web_app/constrained_centre.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -8,45 +10,34 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final posts = Provider.of<List<BlogPost>>(context);
-    return Scaffold(
-      appBar: AppBar(),
-      body: Align(
-        alignment: Alignment.topCenter,
-        child: Container(
-          width: 612,
-          padding: const EdgeInsets.symmetric(horizontal: 18),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ConstrainedCentre(
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage(
-                      'https://i.ibb.co/ZKkSW4H/profile-image.png'),
-                  radius: 72,
-                ),
-              ),
-              SizedBox(height: 18),
-              ConstrainedCentre(
-                child: SelectableText(
-                  'Flutter Dev',
-                  style: Theme.of(context).textTheme.headline1,
-                ),
-              ),
-              SizedBox(height: 40),
-              SelectableText(
-                'Hello, I’m a human. I’m a Flutter developer and an avid human. Occasionally, I nap.',
-                style: Theme.of(context).textTheme.bodyText2,
-              ),
-              SizedBox(height: 40),
-              SelectableText(
-                'Blog',
-                style: Theme.of(context).textTheme.headline2,
-              ),
-              for (var post in posts) BlogListTile(post: post),
-            ],
+    return BlogScaffold(
+      children: [
+        ConstrainedCentre(
+          child: CircleAvatar(
+            backgroundImage:
+                NetworkImage('https://i.ibb.co/ZKkSW4H/profile-image.png'),
+            radius: 72,
           ),
         ),
-      ),
+        SizedBox(height: 18),
+        ConstrainedCentre(
+          child: SelectableText(
+            'Flutter Dev',
+            style: Theme.of(context).textTheme.headline1,
+          ),
+        ),
+        SizedBox(height: 40),
+        SelectableText(
+          'Hello, I’m a human. I’m a Flutter developer and an avid human. Occasionally, I nap.',
+          style: Theme.of(context).textTheme.bodyText2,
+        ),
+        SizedBox(height: 40),
+        SelectableText(
+          'Blog',
+          style: Theme.of(context).textTheme.headline2,
+        ),
+        for (var post in posts) BlogListTile(post: post),
+      ],
     );
   }
 }
@@ -66,11 +57,19 @@ class BlogListTile extends StatelessWidget {
             post.title,
             style: TextStyle(color: Colors.blueAccent.shade700),
           ),
-          onTap: () {},
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) {
+                  return BlogPage(blogPost: post);
+                },
+              ),
+            );
+          },
         ),
         SizedBox(height: 10),
         SelectableText(
-          DateFormat('d MMMM y').format(post.publishedDate),
+          post.date,
           style: Theme.of(context).textTheme.caption,
         ),
       ],
