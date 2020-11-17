@@ -1,3 +1,4 @@
+import 'package:blog_web_app/user.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -36,6 +37,12 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider<List<BlogPost>>(create: (context) => _blogPosts),
+        Provider<User>(
+          create: (context) => User(
+            name: 'Flutter Dev',
+            profilePicture: 'https://i.ibb.co/ZKkSW4H/profile-image.png',
+          ),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Dev Blog',
@@ -50,9 +57,13 @@ final _blogPosts = [
   BlogPost(
     title: 'What is provider?',
     publishedDate: DateTime(2020, 1, 2),
+    body:
+        'A wrapper around InheritedWidget to make them easier to use and more reusable.',
   ),
   BlogPost(
     title: 'What is multi-provider?',
     publishedDate: DateTime(2020, 2, 3),
+    body:
+        'A provider that merges multiple providers into a single linear widget tree. It is used to improve readability and reduce boilerplate code of having to nest multiple layers of providers.',
   ),
 ];
