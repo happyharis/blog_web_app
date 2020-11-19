@@ -1,4 +1,5 @@
 import 'package:blog_web_app/blog_post.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -36,12 +37,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<List<BlogPost>>(create: (context) => _blogPosts),
+        FutureProvider<List<BlogPost>>(
+          initialData: [],
+          create: (context) => getBlogPosts(),
+        ),
+        // Provider<List<BlogPost>>(create: (context) => _blogPosts),
         Provider<User>(
           create: (context) => User(
               name: 'Flutter Dev',
               profilePicture: 'https://i.ibb.co/ZKkSW4H/profile-image.png'),
-        )
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Dev Blog',
@@ -49,6 +54,14 @@ class MyApp extends StatelessWidget {
         home: HomePage(),
       ),
     );
+  }
+
+  Future<List<BlogPost>> getBlogPosts() {
+    return FirebaseFirestore.instance.collection('blog').get().then(
+          (value) => value.docs.map((e) {
+            return BlogPost.fromDocument(e);
+          }).toList(),
+        );
   }
 }
 
