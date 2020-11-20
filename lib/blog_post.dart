@@ -11,8 +11,8 @@ class BlogPost {
   BlogPost({this.title, this.publishedDate, this.body});
 
   factory BlogPost.fromDocument(DocumentSnapshot doc) {
-    if (doc == null || doc?.data() == null) return null;
-    final map = doc.data();
+    final map = doc?.data();
+    if (map == null) return null;
 
     return BlogPost(
       title: map['title'],
