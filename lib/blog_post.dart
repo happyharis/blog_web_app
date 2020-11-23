@@ -20,4 +20,12 @@ class BlogPost {
       body: map['body'],
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'title': title,
+      'body': body,
+      'published_date': Timestamp.fromDate(publishedDate),
+    };
+  }
 }

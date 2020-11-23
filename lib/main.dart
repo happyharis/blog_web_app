@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
   }
 
   Future<List<BlogPost>> blogPosts() {
-    return FirebaseFirestore.instance.collection('blog').get().then((value) {
+    return FirebaseFirestore.instance.collection('blogs').get().then((value) {
       return value.docs.map((e) => BlogPost.fromDocument(e)).toList();
     });
   }
