@@ -1,3 +1,4 @@
+import 'package:blog_web_app/blog_entry_page.dart';
 import 'package:blog_web_app/blog_page.dart';
 import 'package:blog_web_app/blog_post.dart';
 import 'package:blog_web_app/blog_scaffold.dart';
@@ -13,33 +14,43 @@ class HomePage extends StatelessWidget {
     final posts = Provider.of<List<BlogPost>>(context);
     final user = Provider.of<User>(context);
     return BlogScaffold(
-      children: [
-        ConstrainedCentre(
-          child: CircleAvatar(
-            backgroundImage: NetworkImage(user.profilePicture),
-            radius: 72,
+        children: [
+          ConstrainedCentre(
+            child: CircleAvatar(
+              backgroundImage: NetworkImage(user.profilePicture),
+              radius: 72,
+            ),
           ),
-        ),
-        SizedBox(height: 18),
-        ConstrainedCentre(
-          child: SelectableText(
-            user.name,
-            style: Theme.of(context).textTheme.headline1,
+          SizedBox(height: 18),
+          ConstrainedCentre(
+            child: SelectableText(
+              user.name,
+              style: Theme.of(context).textTheme.headline1,
+            ),
           ),
-        ),
-        SizedBox(height: 40),
-        SelectableText(
-          'Hello, I’m a human. I’m a Flutter developer and an avid human. Occasionally, I nap.',
-          style: Theme.of(context).textTheme.bodyText2,
-        ),
-        SizedBox(height: 40),
-        SelectableText(
-          'Blog',
-          style: Theme.of(context).textTheme.headline2,
-        ),
-        for (var post in posts) BlogListTile(post: post),
-      ],
-    );
+          SizedBox(height: 40),
+          SelectableText(
+            'Hello, I’m a human. I’m a Flutter developer and an avid human. Occasionally, I nap.',
+            style: Theme.of(context).textTheme.bodyText2,
+          ),
+          SizedBox(height: 40),
+          SelectableText(
+            'Blog',
+            style: Theme.of(context).textTheme.headline2,
+          ),
+          for (var post in posts) BlogListTile(post: post),
+        ],
+        floatingActionButton: FloatingActionButton.extended(
+          label: Text('New Blog'),
+          icon: Icon(Icons.add),
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) {
+                return BlogEntryPage();
+              },
+            ));
+          },
+        ));
   }
 }
 
