@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
       providers: [
         FutureProvider<List<BlogPost>>(
           initialData: [],
-          create: (context) => getBlogPosts(),
+          create: (context) => blogPosts(),
         ),
         // Provider<List<BlogPost>>(create: (context) => _blogPosts),
         Provider<User>(
@@ -56,26 +56,9 @@ class MyApp extends StatelessWidget {
     );
   }
 
-  Future<List<BlogPost>> getBlogPosts() {
-    return FirebaseFirestore.instance.collection('blog').get().then(
-          (value) => value.docs.map((e) {
-            return BlogPost.fromDocument(e);
-          }).toList(),
-        );
+  Future<List<BlogPost>> blogPosts() {
+    return FirebaseFirestore.instance.collection('blog').get().then((value) {
+      return value.docs.map((e) => BlogPost.fromDocument(e)).toList();
+    });
   }
 }
-
-// final _blogPosts = [
-//   BlogPost(
-//     title: 'What is provider?',
-//     publishedDate: DateTime(2020, 1, 2),
-//     body:
-//         'A wrapper around InheritedWidget to make them easier to use and more reusable.',
-//   ),
-//   BlogPost(
-//     title: 'What is multi-provider?',
-//     publishedDate: DateTime(2020, 2, 3),
-//     body:
-//         'A provider that merges multiple providers into a single linear widget tree. It is used to improve readability and reduce boilerplate code of having to nest multiple layers of providers.',
-//   ),
-// ];
