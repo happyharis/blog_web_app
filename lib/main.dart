@@ -37,14 +37,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        FutureProvider<List<BlogPost>>(
+        StreamProvider<List<BlogPost>>(
           initialData: [],
           create: (context) => blogPosts(),
         ),
         Provider<User>(
           create: (context) => User(
-              name: 'Flutter Dev',
-              profilePicture: 'https://i.ibb.co/ZKkSW4H/profile-image.png'),
+            name: 'Flutter Dev',
+            profilePicture: 'https://i.ibb.co/ZKkSW4H/profile-image.png',
+          ),
         )
       ],
       child: MaterialApp(
@@ -56,8 +57,16 @@ class MyApp extends StatelessWidget {
   }
 }
 
-Future<List<BlogPost>> blogPosts() {
-  return FirebaseFirestore.instance.collection('blogs').get().then((query) {
-    return query.docs.map((doc) => BlogPost.fromDocument(doc)).toList();
+Stream<List<BlogPost>> blogPosts() {
+  return FirebaseFirestore.instance
+      .collection('blogs')
+      .snapshots()
+      .map((snapshot) {
+    return snapshot.docs.map((doc) => BlogPost.fromDocument(doc)).toList()
+      ..sort((first, last) {
+        final firstDate = first.publishedDate;
+        final lastDate = last.publishedDate;
+        return -firstDate.compareTo(lastDate);
+      });
   });
 }
