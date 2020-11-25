@@ -4,11 +4,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class BlogEntryPage extends StatelessWidget {
+  final BlogPost post;
+
+  const BlogEntryPage({Key key, this.post}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     var _textTheme = Theme.of(context).textTheme;
-    final titleController = TextEditingController(text: '');
-    final bodyController = TextEditingController(text: '');
+    final titleController = TextEditingController(text: post?.title ?? '');
+    final bodyController = TextEditingController(text: post?.body ?? '');
+    final isEdit = post != null;
     return BlogScaffold(
       children: [
         // Title
@@ -42,15 +46,34 @@ class BlogEntryPage extends StatelessWidget {
             title: title,
             body: body,
             publishedDate: DateTime.now(),
-          ).toMap();
-          FirebaseFirestore.instance
-              .collection('blogs')
-              .add(blogPost)
-              .then((_) {
-            Navigator.of(context).pop();
-          });
+          );
+          handleBlogUpdate(
+            context: context,
+            oldPost: post,
+            newPost: blogPost,
+            isEdit: isEdit,
+          );
         },
       ),
     );
   }
+}
+
+Future<void> handleBlogUpdate({
+  BuildContext context,
+  BlogPost oldPost,
+  BlogPost newPost,
+  bool isEdit,
+}) async {
+  final newMapPost = newPost.toMap();
+  if (isEdit) {
+    await FirebaseFirestore.instance
+        .collection('blogs')
+        .doc(oldPost.id)
+        .update(newMapPost);
+  } else {
+    await FirebaseFirestore.instance.collection('blogs').add(newMapPost);
+  }
+
+  Navigator.of(context).pop();
 }
