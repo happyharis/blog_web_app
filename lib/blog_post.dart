@@ -2,13 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
 class BlogPost {
-  final String title;
+  final String body, title, id;
   final DateTime publishedDate;
-  final String body;
 
   String get date => DateFormat('d MMMM y').format(publishedDate);
 
-  BlogPost({this.title, this.publishedDate, this.body});
+  BlogPost({this.title, this.publishedDate, this.body, this.id});
 
   factory BlogPost.fromDocument(DocumentSnapshot doc) {
     final map = doc?.data();
@@ -17,6 +16,7 @@ class BlogPost {
       title: map['title'],
       body: map['body'],
       publishedDate: map['published_date'].toDate(),
+      id: doc.id,
     );
   }
 
