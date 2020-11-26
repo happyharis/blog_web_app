@@ -100,7 +100,7 @@ class BlogListTile extends StatelessWidget {
                   ),
                 ];
               },
-              onSelected: (value) {
+              onSelected: (Action value) {
                 switch (value) {
                   case Action.edit:
                     Navigator.of(context).push(

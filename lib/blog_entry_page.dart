@@ -37,8 +37,8 @@ class BlogEntryPage extends StatelessWidget {
         ),
       ],
       floatingActionButton: FloatingActionButton.extended(
-        label: Text('Submit'),
-        icon: Icon(Icons.book),
+        label: Text(isEdit ? 'Update' : 'Submit'),
+        icon: Icon(isEdit ? Icons.check : Icons.book),
         onPressed: () {
           final title = titleController.text;
           final body = bodyController.text;
@@ -48,11 +48,10 @@ class BlogEntryPage extends StatelessWidget {
             publishedDate: DateTime.now(),
           );
           handleBlogUpdate(
-            context: context,
             oldPost: post,
             newPost: blogPost,
             isEdit: isEdit,
-          );
+          ).then((value) => Navigator.of(context).pop());
         },
       ),
     );
@@ -60,10 +59,9 @@ class BlogEntryPage extends StatelessWidget {
 }
 
 Future<void> handleBlogUpdate({
-  BuildContext context,
+  bool isEdit,
   BlogPost oldPost,
   BlogPost newPost,
-  bool isEdit,
 }) async {
   final newMapPost = newPost.toMap();
   if (isEdit) {
@@ -74,6 +72,4 @@ Future<void> handleBlogUpdate({
   } else {
     await FirebaseFirestore.instance.collection('blogs').add(newMapPost);
   }
-
-  Navigator.of(context).pop();
 }

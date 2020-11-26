@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
 class BlogPost {
-  final String body, title, id;
+  final String body;
+  final String title;
+  final String id;
   final DateTime publishedDate;
 
   String get date => DateFormat('d MMMM y').format(publishedDate);
