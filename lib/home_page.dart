@@ -80,11 +80,46 @@ class BlogListTile extends StatelessWidget {
           },
         ),
         SizedBox(height: 10),
-        SelectableText(
-          post.date,
-          style: Theme.of(context).textTheme.caption,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SelectableText(
+              post.date,
+              style: Theme.of(context).textTheme.caption,
+            ),
+            PopupMenuButton<Action>(
+              itemBuilder: (context) {
+                return [
+                  PopupMenuItem(
+                    child: Text('Edit'),
+                    value: Action.edit,
+                  ),
+                  PopupMenuItem(
+                    child: Text('Delete'),
+                    value: Action.delete,
+                  ),
+                ];
+              },
+              onSelected: (value) {
+                switch (value) {
+                  case Action.edit:
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) {
+                        return BlogEntryPage(post: post);
+                      },
+                    ));
+                    break;
+                  case Action.delete:
+                    break;
+                  default:
+                }
+              },
+            )
+          ],
         ),
       ],
     );
   }
 }
+
+enum Action { edit, delete }

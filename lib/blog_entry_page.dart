@@ -4,11 +4,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class BlogEntryPage extends StatelessWidget {
+  final BlogPost post;
+
+  const BlogEntryPage({Key key, this.post}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     var _textTheme = Theme.of(context).textTheme;
-    final titleController = TextEditingController(text: '');
-    final bodyController = TextEditingController(text: '');
+    final titleController = TextEditingController(text: post?.title ?? '');
+    final bodyController = TextEditingController(text: post?.body ?? '');
+    final isEdit = post != null;
     return BlogScaffold(
       children: [
         // Title
@@ -33,8 +37,8 @@ class BlogEntryPage extends StatelessWidget {
         ),
       ],
       floatingActionButton: FloatingActionButton.extended(
-        label: Text('Submit'),
-        icon: Icon(Icons.book),
+        label: Text(isEdit ? 'Update' : 'Submit'),
+        icon: Icon(isEdit ? Icons.check : Icons.book),
         onPressed: () {
           final title = titleController.text;
           final body = bodyController.text;
@@ -42,15 +46,32 @@ class BlogEntryPage extends StatelessWidget {
             title: title,
             body: body,
             publishedDate: DateTime.now(),
-          ).toMap();
-          FirebaseFirestore.instance
-              .collection('blogs')
-              .add(blogPost)
-              .then((_) {
+          );
+          handleBlogUpdate(
+            isEdit: isEdit,
+            newPost: blogPost,
+            oldPost: post,
+          ).then((value) {
             Navigator.of(context).pop();
           });
         },
       ),
     );
+  }
+}
+
+Future<void> handleBlogUpdate({
+  bool isEdit,
+  BlogPost newPost,
+  BlogPost oldPost,
+}) async {
+  final newMapPost = newPost.toMap();
+  if (isEdit) {
+    await FirebaseFirestore.instance
+        .collection('blogs')
+        .doc(oldPost.id)
+        .update(newMapPost);
+  } else {
+    await FirebaseFirestore.instance.collection('blogs').add(newMapPost);
   }
 }

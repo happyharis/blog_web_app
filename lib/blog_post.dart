@@ -5,18 +5,21 @@ class BlogPost {
   final String title;
   final DateTime publishedDate;
   final String body;
+  final String id;
 
   String get date => DateFormat('d MMMM y').format(publishedDate);
 
-  BlogPost({this.title, this.publishedDate, this.body});
+  BlogPost({this.title, this.publishedDate, this.body, this.id});
 
   factory BlogPost.fromDocument(DocumentSnapshot doc) {
     final map = doc?.data();
     if (map == null) return null;
+
     return BlogPost(
       title: map['title'],
       body: map['body'],
       publishedDate: map['published_date'].toDate(),
+      id: doc.id,
     );
   }
 
