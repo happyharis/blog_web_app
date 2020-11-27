@@ -3,6 +3,7 @@ import 'package:blog_web_app/blog_page.dart';
 import 'package:blog_web_app/blog_post.dart';
 import 'package:blog_web_app/blog_scaffold.dart';
 import 'package:blog_web_app/constrained_centre.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -112,6 +113,49 @@ class BlogListTile extends StatelessWidget {
                     );
                     break;
                   case Action.delete:
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return SimpleDialog(
+                          contentPadding: const EdgeInsets.all(18),
+                          children: [
+                            Text("Are you sure you want to delete "),
+                            Text(
+                              post.title,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                            SizedBox(height: 30),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      primary: Colors.redAccent),
+                                  onPressed: () {
+                                    return FirebaseFirestore.instance
+                                        .collection('blogs')
+                                        .doc(post.id)
+                                        .delete()
+                                        .then((_) {
+                                      Navigator.of(context).pop();
+                                    });
+                                  },
+                                  child: Text('Delete'),
+                                ),
+                                SizedBox(width: 20),
+                                TextButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: Text('Cancel'),
+                                )
+                              ],
+                            ),
+                          ],
+                        );
+                      },
+                    );
                     break;
                   default:
                 }
