@@ -1,5 +1,6 @@
 import 'package:blog_web_app/blog_post.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -37,12 +38,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        StreamProvider<bool>(
+          create: (context) => FirebaseAuth.instance
+              .authStateChanges()
+              .map((user) => user != null),
+          initialData: false,
+        ),
         StreamProvider<List<BlogPost>>(
           initialData: [],
           create: (context) => blogPosts(),
         ),
-        Provider<User>(
-          create: (context) => User(
+        Provider<BlogUser>(
+          create: (context) => BlogUser(
               name: 'Flutter Dev',
               profilePicture: 'https://i.ibb.co/ZKkSW4H/profile-image.png'),
         )

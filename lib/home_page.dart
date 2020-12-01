@@ -3,6 +3,8 @@ import 'package:blog_web_app/blog_page.dart';
 import 'package:blog_web_app/blog_post.dart';
 import 'package:blog_web_app/blog_scaffold.dart';
 import 'package:blog_web_app/constrained_centre.dart';
+import 'package:blog_web_app/login_dialog.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -11,9 +13,33 @@ import 'user.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final isUserLoggedIn = Provider.of<bool>(context);
     final posts = Provider.of<List<BlogPost>>(context);
-    final user = Provider.of<User>(context);
+    final user = Provider.of<BlogUser>(context);
     return BlogScaffold(
+        appBar: AppBar(
+          actions: [
+            FlatButton(
+              child: Text(
+                isUserLoggedIn ? '🚪' : '🔐',
+                style: TextStyle(fontSize: 30),
+              ),
+              onPressed: () {
+                if (isUserLoggedIn) {
+                  FirebaseAuth.instance.signOut();
+                } else {
+                  // Login dialog
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return LoginDialog();
+                    },
+                  );
+                }
+              },
+            )
+          ],
+        ),
         children: [
           ConstrainedCentre(
             child: CircleAvatar(
@@ -40,17 +66,19 @@ class HomePage extends StatelessWidget {
           ),
           for (var post in posts) BlogListTile(post: post),
         ],
-        floatingActionButton: FloatingActionButton.extended(
-          label: Text('New Blog'),
-          icon: Icon(Icons.add),
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) {
-                return BlogEntryPage();
-              },
-            ));
-          },
-        ));
+        floatingActionButton: isUserLoggedIn
+            ? FloatingActionButton.extended(
+                label: Text('New Blog'),
+                icon: Icon(Icons.add),
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) {
+                      return BlogEntryPage();
+                    },
+                  ));
+                },
+              )
+            : SizedBox());
   }
 }
 
@@ -60,6 +88,7 @@ class BlogListTile extends StatelessWidget {
   const BlogListTile({Key key, this.post}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final isUserLoggedIn = Provider.of<bool>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -87,34 +116,35 @@ class BlogListTile extends StatelessWidget {
               post.date,
               style: Theme.of(context).textTheme.caption,
             ),
-            PopupMenuButton<Action>(
-              itemBuilder: (context) {
-                return [
-                  PopupMenuItem(
-                    child: Text('Edit'),
-                    value: Action.edit,
-                  ),
-                  PopupMenuItem(
-                    child: Text('Delete'),
-                    value: Action.delete,
-                  ),
-                ];
-              },
-              onSelected: (value) {
-                switch (value) {
-                  case Action.edit:
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) {
-                        return BlogEntryPage(post: post);
-                      },
-                    ));
-                    break;
-                  case Action.delete:
-                    break;
-                  default:
-                }
-              },
-            )
+            if (isUserLoggedIn)
+              PopupMenuButton<Action>(
+                itemBuilder: (context) {
+                  return [
+                    PopupMenuItem(
+                      child: Text('Edit'),
+                      value: Action.edit,
+                    ),
+                    PopupMenuItem(
+                      child: Text('Delete'),
+                      value: Action.delete,
+                    ),
+                  ];
+                },
+                onSelected: (value) {
+                  switch (value) {
+                    case Action.edit:
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) {
+                          return BlogEntryPage(post: post);
+                        },
+                      ));
+                      break;
+                    case Action.delete:
+                      break;
+                    default:
+                  }
+                },
+              )
           ],
         ),
       ],

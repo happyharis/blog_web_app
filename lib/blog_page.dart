@@ -12,7 +12,7 @@ class BlogPage extends StatelessWidget {
   const BlogPage({Key key, this.blogPost}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
+    final user = Provider.of<BlogUser>(context);
     return BlogScaffold(
       children: [
         ConstrainedCentre(

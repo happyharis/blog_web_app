@@ -1,6 +1,6 @@
-class User {
+class BlogUser {
   final String profilePicture;
   final String name;
 
-  User({this.profilePicture, this.name});
+  BlogUser({this.profilePicture, this.name});
 }
