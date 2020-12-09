@@ -6,6 +6,7 @@ class LoginDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
+    final errorNotifier = ValueNotifier<String>('');
     return Dialog(
       child: Container(
         padding: EdgeInsets.all(20),
@@ -45,14 +46,29 @@ class LoginDialog extends StatelessWidget {
                 onPressed: () {
                   final email = emailController.text;
                   final password = passwordController.text;
+                  if (email.isEmpty || password.isEmpty) {
+                    return errorNotifier.value =
+                        'Please fill in the empty fields';
+                  }
                   return FirebaseAuth.instance
                       .signInWithEmailAndPassword(
                         email: email,
                         password: password,
                       )
-                      .then((_) => Navigator.of(context).pop());
+                      .then((_) => Navigator.of(context).pop())
+                      .catchError((error) {
+                    return errorNotifier.value = error.message;
+                  });
                 },
               ),
+            ),
+            SizedBox(height: 10),
+            ValueListenableBuilder<String>(
+              valueListenable: errorNotifier,
+              builder: (context, value, child) {
+                if (value.isEmpty) return SizedBox();
+                return Text(value);
+              },
             ),
           ],
         ),
