@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginDialog extends StatelessWidget {
   @override
@@ -67,12 +68,23 @@ class LoginDialog extends StatelessWidget {
               valueListenable: errorNotifier,
               builder: (context, value, child) {
                 if (value.isEmpty) return SizedBox();
-                return Text(value);
+                return Provider<String>.value(
+                  value: value,
+                  child: ErrorText(),
+                );
               },
             ),
           ],
         ),
       ),
     );
+  }
+}
+
+class ErrorText extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final value = Provider.of<String>(context);
+    return Text(value);
   }
 }
