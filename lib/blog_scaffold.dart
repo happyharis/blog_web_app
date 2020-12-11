@@ -17,12 +17,14 @@ class BlogScaffold extends StatelessWidget {
       appBar: appBar ?? AppBar(),
       body: Align(
         alignment: Alignment.topCenter,
-        child: Container(
-          width: 612,
-          padding: const EdgeInsets.symmetric(horizontal: 18),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: children,
+        child: SingleChildScrollView(
+          child: Container(
+            width: 612,
+            padding: const EdgeInsets.symmetric(horizontal: 18),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: children,
+            ),
           ),
         ),
       ),
