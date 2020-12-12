@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'blog_entry_page.dart';
 import 'blog_page.dart';
 import 'blog_post.dart';
+import 'like_button.dart';
 import 'like_notifier.dart';
 
 class BlogListTile extends StatelessWidget {
@@ -47,21 +48,7 @@ class BlogListTile extends StatelessWidget {
                   post.date,
                   style: Theme.of(context).textTheme.caption,
                 ),
-                if (!isUserLoggedIn)
-                  TextButton.icon(
-                    style: TextButton.styleFrom(
-                      primary: likeNotifier.isLiked
-                          ? Colors.blueAccent.shade700
-                          : Colors.black,
-                    ),
-                    label: Text('Like'),
-                    onPressed: likeNotifier.handleTappedLike,
-                    icon: Icon(
-                      likeNotifier.isLiked
-                          ? Icons.thumb_up
-                          : Icons.thumb_up_outlined,
-                    ),
-                  ),
+                if (!isUserLoggedIn) LikeButton(likeNotifier: likeNotifier),
                 if (isUserLoggedIn) BlogPopupMenuButton(post: post),
               ],
             ),

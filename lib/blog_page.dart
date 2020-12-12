@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'constrained_centre.dart';
+import 'like_button.dart';
 import 'like_notifier.dart';
 import 'user.dart';
 
@@ -44,21 +45,7 @@ class BlogPage extends StatelessWidget {
               blogPost.date,
               style: Theme.of(context).textTheme.caption,
             ),
-            if (!isUserLoggedIn)
-              TextButton.icon(
-                style: TextButton.styleFrom(
-                  primary: likeNotifier.isLiked
-                      ? Colors.blueAccent.shade700
-                      : Colors.black,
-                ),
-                label: Text('Like'),
-                onPressed: likeNotifier.handleTappedLike,
-                icon: Icon(
-                  likeNotifier.isLiked
-                      ? Icons.thumb_up
-                      : Icons.thumb_up_outlined,
-                ),
-              ),
+            if (!isUserLoggedIn) LikeButton(likeNotifier: likeNotifier),
           ],
         ),
         SizedBox(height: 20),
