@@ -53,7 +53,11 @@ class BlogPage extends StatelessWidget {
                 ),
                 label: Text('Like'),
                 onPressed: likeNotifier.handleTappedLike,
-                icon: Icon(Icons.mood),
+                icon: Icon(
+                  likeNotifier.isLiked
+                      ? Icons.thumb_up
+                      : Icons.thumb_up_outlined,
+                ),
               ),
           ],
         ),
