@@ -5,6 +5,8 @@ import 'package:blog_web_app/like_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'like_button.dart';
+
 class BlogListTile extends StatelessWidget {
   final BlogPost post;
 
@@ -29,7 +31,8 @@ class BlogListTile extends StatelessWidget {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) {
-                      return BlogPage(blogPost: post);
+                      return ChangeNotifierProvider.value(
+                          value: likeNotifier, child: BlogPage(blogPost: post));
                     },
                   ),
                 );
@@ -43,17 +46,7 @@ class BlogListTile extends StatelessWidget {
                   post.date,
                   style: Theme.of(context).textTheme.caption,
                 ),
-                TextButton.icon(
-                  style: TextButton.styleFrom(
-                      primary: likeNotifier.isLiked
-                          ? Colors.blueAccent.shade700
-                          : Colors.black),
-                  icon: Icon(likeNotifier.isLiked
-                      ? Icons.thumb_up
-                      : Icons.thumb_up_outlined),
-                  label: Text('Like'),
-                  onPressed: likeNotifier.toggleLike,
-                ),
+                if (!isUserLoggedIn) LikeButton(likeNotifier: likeNotifier),
                 if (isUserLoggedIn) BlogPopUpMenuButton(post: post)
               ],
             ),
