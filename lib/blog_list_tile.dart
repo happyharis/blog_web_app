@@ -2,6 +2,8 @@ import 'package:blog_web_app/blog_entry_page.dart';
 import 'package:blog_web_app/blog_page.dart';
 import 'package:blog_web_app/blog_post.dart';
 import 'package:blog_web_app/like_notifier.dart';
+import 'package:blog_web_app/user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,9 +15,13 @@ class BlogListTile extends StatelessWidget {
   const BlogListTile({Key key, this.post}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final isUserLoggedIn = Provider.of<bool>(context);
-    return ChangeNotifierProvider<LikeNotifier>(
-      create: (context) => LikeNotifier(),
+    final isAuthorLoggedIn = Provider.of<BlogUser>(context).isAuthorLoggedIn;
+    final blogUser = Provider.of<BlogUser>(context);
+    return ChangeNotifierProxyProvider<BlogUser, LikeNotifier>(
+      create: (context) => LikeNotifier(context),
+      update: (context, _, likeNotifier) {
+        return likeNotifier..update(blogUser.isLoggedIn);
+      },
       builder: (context, child) {
         final likeNotifier = Provider.of<LikeNotifier>(context);
         return Column(
@@ -46,8 +52,9 @@ class BlogListTile extends StatelessWidget {
                   post.date,
                   style: Theme.of(context).textTheme.caption,
                 ),
-                if (!isUserLoggedIn) LikeButton(likeNotifier: likeNotifier),
-                if (isUserLoggedIn) BlogPopUpMenuButton(post: post)
+                if (isAuthorLoggedIn) Spacer(),
+                LikeButton(likeNotifier: likeNotifier),
+                if (isAuthorLoggedIn) BlogPopUpMenuButton(post: post)
               ],
             ),
             Divider(thickness: 2),
@@ -91,6 +98,49 @@ class BlogPopUpMenuButton extends StatelessWidget {
             ));
             break;
           case Action.delete:
+            showDialog(
+              context: context,
+              builder: (context) {
+                return SimpleDialog(
+                  contentPadding: const EdgeInsets.all(18),
+                  children: [
+                    Text("Are you sure you want to delete "),
+                    Text(
+                      post.title,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                    SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.redAccent),
+                          onPressed: () {
+                            return FirebaseFirestore.instance
+                                .collection('blogs')
+                                .doc(post.id)
+                                .delete()
+                                .then((_) {
+                              Navigator.of(context).pop();
+                            });
+                          },
+                          child: Text('Delete'),
+                        ),
+                        SizedBox(width: 20),
+                        TextButton(
+                          onPressed: () => Navigator.of(context).pop(),
+                          child: Text('Cancel'),
+                        )
+                      ],
+                    ),
+                  ],
+                );
+              },
+            );
             break;
           default:
         }

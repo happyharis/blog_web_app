@@ -13,7 +13,8 @@ import 'user.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final isUserLoggedIn = Provider.of<bool>(context);
+    final isUserLoggedIn = Provider.of<BlogUser>(context).isLoggedIn;
+    final isAuthorLoggedIn = Provider.of<BlogUser>(context).isAuthorLoggedIn;
     final posts = Provider.of<List<BlogPost>>(context);
     final user = Provider.of<BlogUser>(context);
     return BlogScaffold(
@@ -66,7 +67,7 @@ class HomePage extends StatelessWidget {
           ),
           for (var post in posts) BlogListTile(post: post),
         ],
-        floatingActionButton: isUserLoggedIn
+        floatingActionButton: isAuthorLoggedIn
             ? FloatingActionButton.extended(
                 label: Text('New Blog'),
                 icon: Icon(Icons.add),
