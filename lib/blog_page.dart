@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'constrained_centre.dart';
 import 'like_button.dart';
 import 'like_notifier.dart';
-import 'user.dart';
+import 'blog_user.dart';
 
 class BlogPage extends StatelessWidget {
   final BlogPost blogPost;

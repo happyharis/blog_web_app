@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'home_page.dart';
-import 'user.dart';
+import 'blog_user.dart';
 
 var theme = ThemeData(
   primarySwatch: Colors.blue,

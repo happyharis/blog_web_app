@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'blog_list_tile.dart';
-import 'user.dart';
+import 'blog_user.dart';
 
 class HomePage extends StatelessWidget {
   @override

@@ -2,7 +2,7 @@ import 'package:blog_web_app/blog_entry_page.dart';
 import 'package:blog_web_app/blog_page.dart';
 import 'package:blog_web_app/blog_post.dart';
 import 'package:blog_web_app/like_notifier.dart';
-import 'package:blog_web_app/user.dart';
+import 'package:blog_web_app/blog_user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
