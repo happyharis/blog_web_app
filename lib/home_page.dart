@@ -65,7 +65,13 @@ class HomePage extends StatelessWidget {
             'Blog',
             style: Theme.of(context).textTheme.headline2,
           ),
-          for (var post in posts) BlogListTile(post: post),
+          for (var post in posts)
+            // Reason is that will have to create parameter for each descendant
+            // widget which is high maintenance cost.
+            Provider.value(
+              value: post,
+              child: BlogListTile(),
+            ),
         ],
         floatingActionButton: isAuthorLoggedIn
             ? FloatingActionButton.extended(

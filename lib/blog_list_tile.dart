@@ -10,12 +10,10 @@ import 'package:provider/provider.dart';
 import 'like_button.dart';
 
 class BlogListTile extends StatelessWidget {
-  final BlogPost post;
-
-  const BlogListTile({Key key, this.post}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final isAuthorLoggedIn = Provider.of<BlogUser>(context).isAuthorLoggedIn;
+    final post = Provider.of<BlogPost>(context);
     // This means that we can get the blog user object instance from
     // change notifier proxy provider.
     return ChangeNotifierProxyProvider<BlogUser, LikeNotifier>(
