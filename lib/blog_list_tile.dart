@@ -16,10 +16,11 @@ class BlogListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isAuthorLoggedIn = Provider.of<BlogUser>(context).isAuthorLoggedIn;
-    final blogUser = Provider.of<BlogUser>(context);
+    // This means that we can get the blog user object instance from
+    // change notifier proxy provider.
     return ChangeNotifierProxyProvider<BlogUser, LikeNotifier>(
       create: (context) => LikeNotifier(context),
-      update: (context, _, likeNotifier) {
+      update: (context, blogUser, likeNotifier) {
         return likeNotifier..update(blogUser.isLoggedIn);
       },
       builder: (context, child) {
