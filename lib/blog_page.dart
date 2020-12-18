@@ -3,19 +3,15 @@ import 'package:blog_web_app/blog_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'blog_user.dart';
 import 'constrained_centre.dart';
 import 'like_button.dart';
-import 'like_notifier.dart';
-import 'blog_user.dart';
 
 class BlogPage extends StatelessWidget {
-  final BlogPost blogPost;
-
-  const BlogPage({Key key, this.blogPost}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<BlogUser>(context);
-    final likeNotifier = Provider.of<LikeNotifier>(context);
+    final blogPost = Provider.of<BlogPost>(context);
     return BlogScaffold(
       children: [
         ConstrainedCentre(
@@ -44,7 +40,7 @@ class BlogPage extends StatelessWidget {
               blogPost.date,
               style: Theme.of(context).textTheme.caption,
             ),
-            LikeButton(likeNotifier: likeNotifier),
+            LikeButton(),
           ],
         ),
         SizedBox(height: 20),

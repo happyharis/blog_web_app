@@ -4,6 +4,7 @@ import 'package:blog_web_app/blog_post.dart';
 import 'package:blog_web_app/like_notifier.dart';
 import 'package:blog_web_app/blog_user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -14,12 +15,15 @@ class BlogListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final isAuthorLoggedIn = Provider.of<BlogUser>(context).isAuthorLoggedIn;
     final post = Provider.of<BlogPost>(context);
+
     // This means that we can get the blog user object instance from
     // change notifier proxy provider.
-    return ChangeNotifierProxyProvider<BlogUser, LikeNotifier>(
+    return ChangeNotifierProxyProvider2<BlogUser, List<String>, LikeNotifier>(
       create: (context) => LikeNotifier(context),
-      update: (context, blogUser, likeNotifier) {
-        return likeNotifier..update(blogUser.isLoggedIn);
+      update: (context, blogUser, likedPosts, likeNotifier) {
+        return likeNotifier
+          ..updateLoginStatus(blogUser.isLoggedIn)
+          ..initLikeStatus(likedPosts?.contains(post.id));
       },
       builder: (context, child) {
         final likeNotifier = Provider.of<LikeNotifier>(context);
@@ -36,8 +40,13 @@ class BlogListTile extends StatelessWidget {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) {
-                      return ChangeNotifierProvider.value(
-                          value: likeNotifier, child: BlogPage(blogPost: post));
+                      return MultiProvider(
+                        providers: [
+                          ChangeNotifierProvider.value(value: likeNotifier),
+                          Provider<BlogPost>.value(value: post),
+                        ],
+                        child: BlogPage(),
+                      );
                     },
                   ),
                 );
@@ -52,7 +61,7 @@ class BlogListTile extends StatelessWidget {
                   style: Theme.of(context).textTheme.caption,
                 ),
                 if (isAuthorLoggedIn) Spacer(),
-                LikeButton(likeNotifier: likeNotifier),
+                LikeButton(),
                 if (isAuthorLoggedIn) BlogPopUpMenuButton(post: post)
               ],
             ),

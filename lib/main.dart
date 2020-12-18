@@ -58,6 +58,7 @@ class MyApp extends StatelessWidget {
               profilePicture: blogUser.profilePicture,
               isAuthor: user?.uid == 'CyUjOfFXOXbcbg4JFZJwYt9SxAw1',
               isLoggedIn: user != null,
+              // likedPosts: likedPosts,
             );
           },
         )
@@ -83,4 +84,17 @@ Stream<List<BlogPost>> blogPosts() {
         return -firstDate.compareTo(lastDate);
       });
   });
+}
+
+Stream<List<String>> userLikedPosts(String uid) {
+  if (uid == null)
+    return null;
+  else
+    return FirebaseFirestore.instance
+        .collection('visitors')
+        .doc(uid)
+        .snapshots()
+        .map((snapshot) {
+      return List<String>.from(snapshot.data()['liked_blog_posts']);
+    });
 }
