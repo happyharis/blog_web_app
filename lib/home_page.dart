@@ -8,12 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'blog_list_tile.dart';
-import 'user.dart';
+import 'blog_user.dart';
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final isUserLoggedIn = Provider.of<bool>(context);
+    final isUserLoggedIn = Provider.of<BlogUser>(context).isLoggedIn;
     final posts = Provider.of<List<BlogPost>>(context);
     final user = Provider.of<BlogUser>(context);
     return BlogScaffold(

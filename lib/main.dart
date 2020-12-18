@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'home_page.dart';
-import 'user.dart';
+import 'blog_user.dart';
 
 var theme = ThemeData(
   primarySwatch: Colors.blue,
@@ -38,21 +38,25 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        StreamProvider<bool>(
-          create: (context) => FirebaseAuth.instance
-              .authStateChanges()
-              .map((user) => user != null),
-          initialData: false,
+        StreamProvider<User>(
+          create: (context) => FirebaseAuth.instance.authStateChanges(),
         ),
         StreamProvider<List<BlogPost>>(
           initialData: [],
           create: (context) => blogPosts(),
         ),
-        Provider<BlogUser>(
+        ProxyProvider<User, BlogUser>(
           create: (context) => BlogUser(
-              name: 'Flutter Dev',
-              profilePicture: 'https://i.ibb.co/ZKkSW4H/profile-image.png'),
-        )
+            name: 'Flutter Dev',
+            profilePicture: 'https://i.ibb.co/ZKkSW4H/profile-image.png',
+            isLoggedIn: false,
+          ),
+          update: (context, firebaseUser, blogUser) => BlogUser(
+            name: blogUser.name,
+            profilePicture: blogUser.profilePicture,
+            isLoggedIn: firebaseUser != null,
+          ),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Dev Blog',

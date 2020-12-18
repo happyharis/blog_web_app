@@ -1,3 +1,4 @@
+import 'package:blog_web_app/blog_user.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +17,7 @@ class BlogListTile extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => LikeNotifier(post)..init(),
       builder: (context, child) {
-        final isUserLoggedIn = Provider.of<bool>(context);
+        final isUserLoggedIn = Provider.of<BlogUser>(context).isLoggedIn;
         final likeNotifier = Provider.of<LikeNotifier>(context);
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,

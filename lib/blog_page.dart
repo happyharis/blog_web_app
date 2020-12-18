@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'constrained_centre.dart';
 import 'like_button.dart';
 import 'like_notifier.dart';
-import 'user.dart';
+import 'blog_user.dart';
 
 class BlogPage extends StatelessWidget {
   final BlogPost blogPost;
@@ -16,7 +16,7 @@ class BlogPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<BlogUser>(context);
     final likeNotifier = Provider.of<LikeNotifier>(context);
-    final isUserLoggedIn = Provider.of<bool>(context);
+    final isUserLoggedIn = Provider.of<BlogUser>(context).isLoggedIn;
     return BlogScaffold(
       children: [
         ConstrainedCentre(
