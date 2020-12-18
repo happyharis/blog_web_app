@@ -14,7 +14,7 @@ class BlogListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => LikeNotifier(),
+      create: (context) => LikeNotifier(post)..init(),
       builder: (context, child) {
         final isUserLoggedIn = Provider.of<bool>(context);
         final likeNotifier = Provider.of<LikeNotifier>(context);

@@ -6,21 +6,22 @@ class BlogPost {
   final DateTime publishedDate;
   final String body;
   final String id;
+  final bool isLiked;
 
   String get date => DateFormat('d MMMM y').format(publishedDate);
 
-  BlogPost({this.title, this.publishedDate, this.body, this.id});
+  BlogPost({this.title, this.publishedDate, this.body, this.id, this.isLiked});
 
   factory BlogPost.fromDocument(DocumentSnapshot doc) {
     final map = doc?.data();
     if (map == null) return null;
 
     return BlogPost(
-      title: map['title'],
-      body: map['body'],
-      publishedDate: map['published_date'].toDate(),
-      id: doc.id,
-    );
+        title: map['title'],
+        body: map['body'],
+        publishedDate: map['published_date'].toDate(),
+        id: doc.id,
+        isLiked: map['is_liked'] ?? false);
   }
 
   Map<String, dynamic> toMap() {
