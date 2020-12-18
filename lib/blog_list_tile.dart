@@ -2,6 +2,7 @@ import 'package:blog_web_app/blog_entry_page.dart';
 import 'package:blog_web_app/blog_page.dart';
 import 'package:blog_web_app/blog_post.dart';
 import 'package:blog_web_app/like_notifier.dart';
+import 'package:blog_web_app/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +15,7 @@ class BlogListTile extends StatelessWidget {
   const BlogListTile({Key key, this.post}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final isUserLoggedIn = Provider.of<bool>(context);
+    final isUserLoggedIn = Provider.of<BlogUser>(context).isLoggedIn;
     return ChangeNotifierProvider<LikeNotifier>(
       create: (context) => LikeNotifier(),
       builder: (context, child) {

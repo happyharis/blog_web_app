@@ -38,20 +38,23 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        StreamProvider<bool>(
-          create: (context) => FirebaseAuth.instance
-              .authStateChanges()
-              .map((user) => user != null),
-          initialData: false,
-        ),
+        StreamProvider<User>(
+            create: (context) => FirebaseAuth.instance.authStateChanges()),
         StreamProvider<List<BlogPost>>(
           initialData: [],
           create: (context) => blogPosts(),
         ),
-        Provider<BlogUser>(
+        ProxyProvider<User, BlogUser>(
           create: (context) => BlogUser(
-              name: 'Flutter Dev',
-              profilePicture: 'https://i.ibb.co/ZKkSW4H/profile-image.png'),
+            name: 'Flutter Dev',
+            profilePicture: 'https://i.ibb.co/ZKkSW4H/profile-image.png',
+            isLoggedIn: false,
+          ),
+          update: (context, user, blogUser) => BlogUser(
+            name: blogUser.name,
+            profilePicture: blogUser.profilePicture,
+            isLoggedIn: user != null,
+          ),
         )
       ],
       child: MaterialApp(
