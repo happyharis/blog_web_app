@@ -27,7 +27,9 @@ var theme = ThemeData(
     color: Colors.transparent,
     elevation: 0,
     iconTheme: IconThemeData(color: Colors.black),
+    titleTextStyle: TextStyle(color: Colors.black),
   ),
+  scaffoldBackgroundColor: Colors.white,
 );
 void main() {
   runApp(MyApp());
@@ -60,6 +62,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Flutter Dev Blog',
+        debugShowCheckedModeBanner: false,
         theme: theme,
         home: HomePage(),
       ),

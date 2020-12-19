@@ -3,6 +3,7 @@ import 'package:blog_web_app/blog_post.dart';
 import 'package:blog_web_app/blog_scaffold.dart';
 import 'package:blog_web_app/constrained_centre.dart';
 import 'package:blog_web_app/login_dialog.dart';
+import 'package:blog_web_app/store_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -37,7 +38,23 @@ class HomePage extends StatelessWidget {
                   );
                 }
               },
-            )
+            ),
+            FlatButton(
+              child: Text(
+                // '🛒',
+                '🛍️',
+                style: TextStyle(fontSize: 30),
+              ),
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return StorePage();
+                    },
+                  ),
+                );
+              },
+            ),
           ],
         ),
         children: [
