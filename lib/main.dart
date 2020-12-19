@@ -1,4 +1,5 @@
 import 'package:blog_web_app/models/blog_post.dart';
+import 'package:blog_web_app/models/cart_notifier.dart';
 import 'package:blog_web_app/pages/store_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -65,6 +66,13 @@ class MyApp extends StatelessWidget {
         Provider<List<StoreItem>>(
           create: (context) => _storeItems,
         ),
+        ChangeNotifierProxyProvider<List<StoreItem>, CartNotifier>(
+          create: (context) => CartNotifier(),
+          update: (context, storeItems, cart) {
+            cart.items = storeItems;
+            return cart;
+          },
+        )
       ],
       child: MaterialApp(
         title: 'Flutter Dev Blog',

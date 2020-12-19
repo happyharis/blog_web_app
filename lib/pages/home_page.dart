@@ -1,9 +1,8 @@
-import 'package:blog_web_app/pages/blog_entry_page.dart';
-import 'package:blog_web_app/models/blog_post.dart';
 import 'package:blog_web_app/common/blog_scaffold.dart';
 import 'package:blog_web_app/common/constrained_centre.dart';
 import 'package:blog_web_app/common/login_dialog.dart';
-import 'package:blog_web_app/pages/store_page.dart';
+import 'package:blog_web_app/models/blog_post.dart';
+import 'package:blog_web_app/pages/blog_entry_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

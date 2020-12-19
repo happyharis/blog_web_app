@@ -1,6 +1,5 @@
 import 'package:blog_web_app/common/blog_scaffold.dart';
 import 'package:blog_web_app/models/store_item.dart';
-import 'package:blog_web_app/pages/checkout_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
