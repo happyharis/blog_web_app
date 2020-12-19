@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'like_button.dart';
+import 'user.dart';
 
 class BlogListTile extends StatelessWidget {
   final BlogPost post;
@@ -14,7 +15,7 @@ class BlogListTile extends StatelessWidget {
   const BlogListTile({Key key, this.post}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final isUserLoggedIn = Provider.of<bool>(context);
+    final isUserLoggedIn = Provider.of<BlogUser>(context).isLoggedIn;
     return ChangeNotifierProvider<LikeNotifier>(
       create: (context) => LikeNotifier(post)..init(),
       builder: (context, child) {
