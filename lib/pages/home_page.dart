@@ -1,15 +1,15 @@
-import 'package:blog_web_app/blog_entry_page.dart';
-import 'package:blog_web_app/blog_post.dart';
-import 'package:blog_web_app/blog_scaffold.dart';
-import 'package:blog_web_app/constrained_centre.dart';
-import 'package:blog_web_app/login_dialog.dart';
-import 'package:blog_web_app/store_page.dart';
+import 'package:blog_web_app/pages/blog_entry_page.dart';
+import 'package:blog_web_app/models/blog_post.dart';
+import 'package:blog_web_app/common/blog_scaffold.dart';
+import 'package:blog_web_app/common/constrained_centre.dart';
+import 'package:blog_web_app/common/login_dialog.dart';
+import 'package:blog_web_app/pages/store_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'blog_list_tile.dart';
-import 'user.dart';
+import '../common/blog_list_tile.dart';
+import '../models/blog_user.dart';
 
 class HomePage extends StatelessWidget {
   @override

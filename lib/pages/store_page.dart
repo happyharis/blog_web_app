@@ -1,5 +1,5 @@
-import 'package:blog_web_app/blog_scaffold.dart';
-import 'package:blog_web_app/checkout_page.dart';
+import 'package:blog_web_app/common/blog_scaffold.dart';
+import 'package:blog_web_app/pages/checkout_page.dart';
 import 'package:flutter/material.dart';
 
 class StorePage extends StatelessWidget {
