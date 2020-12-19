@@ -45,15 +45,7 @@ class HomePage extends StatelessWidget {
                 '🛍️',
                 style: TextStyle(fontSize: 30),
               ),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return StorePage();
-                    },
-                  ),
-                );
-              },
+              onPressed: () => Navigator.of(context).pushNamed('/store'),
             ),
           ],
         ),

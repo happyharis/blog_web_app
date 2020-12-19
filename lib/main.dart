@@ -1,9 +1,12 @@
 import 'package:blog_web_app/models/blog_post.dart';
+import 'package:blog_web_app/pages/store_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'models/store_item.dart';
+import 'pages/checkout_page.dart';
 import 'pages/home_page.dart';
 import 'models/blog_user.dart';
 
@@ -58,13 +61,20 @@ class MyApp extends StatelessWidget {
             profilePicture: blogUser.profilePicture,
             isLoggedIn: firebaseUser != null,
           ),
-        )
+        ),
+        Provider<List<StoreItem>>(
+          create: (context) => _storeItems,
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Dev Blog',
         debugShowCheckedModeBanner: false,
         theme: theme,
         home: HomePage(),
+        routes: {
+          '/store': (context) => StorePage(),
+          '/checkout': (context) => CheckoutPage(),
+        },
       ),
     );
   }
@@ -83,3 +93,26 @@ Stream<List<BlogPost>> blogPosts() {
       });
   });
 }
+
+final _storeItems = [
+  StoreItem(
+    name: 'Flutter Shirt',
+    price: 12,
+    imageUrl: 'https://i.ibb.co/SdCNQB8/1.png',
+  ),
+  StoreItem(
+    name: 'Flutter Cap',
+    price: 3,
+    imageUrl: 'https://i.ibb.co/gP8BhLr/2.png',
+  ),
+  StoreItem(
+    name: 'Flutter Mug',
+    price: 4,
+    imageUrl: 'https://i.ibb.co/t28Xxzq/3.png',
+  ),
+  StoreItem(
+    name: 'Flutter Bottle',
+    price: 13,
+    imageUrl: 'https://i.ibb.co/bBThnXy/4.png',
+  ),
+];
