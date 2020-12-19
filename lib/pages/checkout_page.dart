@@ -1,12 +1,13 @@
 import 'package:blog_web_app/common/blog_scaffold.dart';
-import 'package:blog_web_app/models/store_item.dart';
+import 'package:blog_web_app/models/cart_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CheckoutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final _storeItems = Provider.of<List<StoreItem>>(context);
+    final cart = context.watch<CartNotifier>();
+    final _items = cart.items;
     return BlogScaffold(
       appBar: AppBar(
         title: Text(
@@ -17,9 +18,9 @@ class CheckoutPage extends StatelessWidget {
       children: [
         Expanded(
           child: ListView.builder(
-            itemCount: _storeItems.length,
+            itemCount: _items.length,
             itemBuilder: (context, index) {
-              final item = _storeItems.elementAt(index);
+              final item = _items.elementAt(index);
               return ListTile(
                 minVerticalPadding: 20,
                 leading: CircleAvatar(
@@ -27,7 +28,9 @@ class CheckoutPage extends StatelessWidget {
                 ),
                 trailing: IconButton(
                   icon: Icon(Icons.remove_circle_outline),
-                  onPressed: () {},
+                  onPressed: () {
+                    context.read<CartNotifier>().remove(item);
+                  },
                 ),
                 title: Text(item.name),
               );
@@ -41,11 +44,15 @@ class CheckoutPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  '\$100 ',
+                  '\$${cart.totalPrice} ',
                   style: Theme.of(context).textTheme.headline1,
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Comming soon...')),
+                    );
+                  },
                   child: Text('BUY'),
                 )
               ],

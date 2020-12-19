@@ -4,4 +4,9 @@ class StoreItem {
   final String imageUrl;
 
   StoreItem({this.name, this.price, this.imageUrl});
+
+  @override
+  String toString() {
+    return 'StoreItem(name: $name, price: $price, imageUrl: $imageUrl)';
+  }
 }

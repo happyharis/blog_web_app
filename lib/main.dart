@@ -69,7 +69,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProxyProvider<List<StoreItem>, CartNotifier>(
           create: (context) => CartNotifier(),
           update: (context, storeItems, cart) {
-            cart.items = storeItems;
+            cart.catalog = storeItems;
             return cart;
           },
         )
