@@ -63,13 +63,14 @@ class MyApp extends StatelessWidget {
             isLoggedIn: firebaseUser != null,
           ),
         ),
-        Provider<List<StoreItem>>(
-          create: (context) => _storeItems,
+        StreamProvider<List<QueryDocumentSnapshot>>(
+          create: (context) => storeItemsStream(),
         ),
-        ChangeNotifierProxyProvider<List<StoreItem>, CartNotifier>(
+        ChangeNotifierProxyProvider<List<QueryDocumentSnapshot>, CartNotifier>(
           create: (context) => CartNotifier(),
-          update: (context, storeItems, cart) {
-            cart.catalog = storeItems;
+          update: (context, storeItemsDocs, cart) {
+            cart.catalog =
+                storeItemsDocs.map((e) => StoreItem.fromDocument(e)).toList();
             return cart;
           },
         )
@@ -99,6 +100,15 @@ Stream<List<BlogPost>> blogPosts() {
         final lastDate = last.publishedDate;
         return -firstDate.compareTo(lastDate);
       });
+  });
+}
+
+Stream<List<QueryDocumentSnapshot>> storeItemsStream() {
+  return FirebaseFirestore.instance
+      .collection('store_items')
+      .snapshots()
+      .map((snapshot) {
+    return snapshot.docs;
   });
 }
 
