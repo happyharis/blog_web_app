@@ -64,13 +64,15 @@ class MyApp extends StatelessWidget {
           ),
         ),
         StreamProvider<List<QueryDocumentSnapshot>>(
+          initialData: [],
           create: (context) => storeItemsStream(),
         ),
         ChangeNotifierProxyProvider<List<QueryDocumentSnapshot>, CartNotifier>(
           create: (context) => CartNotifier(),
           update: (context, storeItemsDocs, cart) {
-            cart.catalog =
-                storeItemsDocs.map((e) => StoreItem.fromDocument(e)).toList();
+            cart.catalog = storeItemsDocs.map((e) {
+              return StoreItem.fromDocument(e);
+            }).toList();
             return cart;
           },
         )
