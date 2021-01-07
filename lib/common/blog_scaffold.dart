@@ -5,6 +5,7 @@ class BlogScaffold extends StatelessWidget {
   final Widget floatingActionButton;
   final Widget appBar;
   final Widget body;
+  final bool isScrollable;
 
   const BlogScaffold({
     Key key,
@@ -12,6 +13,7 @@ class BlogScaffold extends StatelessWidget {
     this.floatingActionButton,
     this.appBar,
     this.body,
+    this.isScrollable = false,
   })  : assert(
           body == null || children == null,
           'Body and children cannot be together as they are both in the body of the scaffold',
@@ -27,10 +29,17 @@ class BlogScaffold extends StatelessWidget {
           width: 612,
           padding: const EdgeInsets.symmetric(horizontal: 18),
           child: body ??
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: children,
-              ),
+              (isScrollable
+                  ? SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: children,
+                      ),
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: children,
+                    )),
         ),
       ),
       floatingActionButton: floatingActionButton,
