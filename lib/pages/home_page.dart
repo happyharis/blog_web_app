@@ -17,6 +17,7 @@ class HomePage extends StatelessWidget {
     final posts = Provider.of<List<BlogPost>>(context);
     final user = Provider.of<BlogUser>(context);
     return BlogScaffold(
+        isScrollable: true,
         appBar: AppBar(
           actions: [
             FlatButton(
