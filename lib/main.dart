@@ -68,9 +68,10 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Dev Blog',
         theme: theme,
-        home: CheckoutPage(),
+        home: StorePage(),
         routes: {
           '/store': (context) => StorePage(),
           '/checkout': (context) => CheckoutPage(),
