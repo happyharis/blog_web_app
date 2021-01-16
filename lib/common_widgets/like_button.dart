@@ -1,4 +1,4 @@
-import 'package:blog_web_app/like_notifier.dart';
+import 'package:blog_web_app/models/like_notifier.dart';
 import 'package:flutter/material.dart';
 
 class LikeButton extends StatelessWidget {

@@ -1,14 +1,14 @@
-import 'package:blog_web_app/blog_entry_page.dart';
-import 'package:blog_web_app/blog_post.dart';
-import 'package:blog_web_app/blog_scaffold.dart';
-import 'package:blog_web_app/constrained_centre.dart';
-import 'package:blog_web_app/login_dialog.dart';
+import 'package:blog_web_app/pages/blog_entry_page.dart';
+import 'package:blog_web_app/common_widgets/blog_post.dart';
+import 'package:blog_web_app/common_widgets/blog_scaffold.dart';
+import 'package:blog_web_app/common_widgets/constrained_centre.dart';
+import 'package:blog_web_app/common_widgets/login_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'blog_list_tile.dart';
-import 'user.dart';
+import '../common_widgets/blog_list_tile.dart';
+import '../models/user.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -17,9 +17,17 @@ class HomePage extends StatelessWidget {
     final posts = Provider.of<List<BlogPost>>(context);
     final user = Provider.of<BlogUser>(context);
     return BlogScaffold(
+        isScrollable: true,
         appBar: AppBar(
           actions: [
-            FlatButton(
+            TextButton(
+              onPressed: () => Navigator.of(context).pushNamed('/store'),
+              child: Text(
+                '🛍',
+                style: TextStyle(fontSize: 30),
+              ),
+            ),
+            TextButton(
               child: Text(
                 isUserLoggedIn ? '🚪' : '🔐',
                 style: TextStyle(fontSize: 30),
