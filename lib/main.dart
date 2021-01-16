@@ -1,11 +1,11 @@
-import 'package:blog_web_app/blog_post.dart';
+import 'package:blog_web_app/common_widgets/blog_post.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'home_page.dart';
-import 'user.dart';
+import 'pages/home_page.dart';
+import 'models/user.dart';
 
 var theme = ThemeData(
   primarySwatch: Colors.blue,

@@ -1,12 +1,12 @@
-import 'package:blog_web_app/blog_post.dart';
-import 'package:blog_web_app/blog_scaffold.dart';
+import 'package:blog_web_app/common_widgets/blog_post.dart';
+import 'package:blog_web_app/common_widgets/blog_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'constrained_centre.dart';
-import 'like_button.dart';
-import 'like_notifier.dart';
-import 'user.dart';
+import '../common_widgets/constrained_centre.dart';
+import '../common_widgets/like_button.dart';
+import '../models/like_notifier.dart';
+import '../models/user.dart';
 
 class BlogPage extends StatelessWidget {
   final BlogPost blogPost;
