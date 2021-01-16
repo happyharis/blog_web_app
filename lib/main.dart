@@ -1,4 +1,5 @@
 import 'package:blog_web_app/common_widgets/blog_post.dart';
+import 'package:blog_web_app/models/cart_notifier.dart';
 import 'package:blog_web_app/pages/store_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'models/store_item.dart';
+import 'pages/checkout_page.dart';
 import 'pages/home_page.dart';
 import 'models/user.dart';
 
@@ -61,13 +63,17 @@ class MyApp extends StatelessWidget {
           ),
         ),
         Provider<List<StoreItem>>(create: (context) => _storeItems),
+        ChangeNotifierProvider<CartNotifier>(
+          create: (context) => CartNotifier(),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Dev Blog',
         theme: theme,
-        home: StorePage(),
+        home: CheckoutPage(),
         routes: {
           '/store': (context) => StorePage(),
+          '/checkout': (context) => CheckoutPage(),
         },
       ),
     );
