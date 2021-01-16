@@ -17,6 +17,7 @@ class BlogPage extends StatelessWidget {
     final user = Provider.of<BlogUser>(context);
     final likeNotifier = Provider.of<LikeNotifier>(context);
     return BlogScaffold(
+      isScrollable: true,
       children: [
         ConstrainedCentre(
           child: CircleAvatar(
