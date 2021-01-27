@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class LoginDialog extends StatelessWidget {
   @override
@@ -38,53 +37,45 @@ class LoginDialog extends StatelessWidget {
             ),
             SizedBox(
               width: double.infinity,
-              child: FlatButton(
+              child: TextButton(
                 child: Text(
                   'Login',
                   style: TextStyle(color: Colors.white),
                 ),
-                color: Colors.blueAccent,
+                style: TextButton.styleFrom(backgroundColor: Colors.blueAccent),
                 onPressed: () {
                   final email = emailController.text;
                   final password = passwordController.text;
                   if (email.isEmpty || password.isEmpty) {
-                    return errorNotifier.value =
-                        'Please fill in the empty fields';
+                    return errorNotifier.value = 'Fill in the empty fields.';
                   }
-                  return FirebaseAuth.instance
+                  FirebaseAuth.instance
                       .signInWithEmailAndPassword(
                         email: email,
                         password: password,
                       )
                       .then((_) => Navigator.of(context).pop())
                       .catchError((error) {
-                    return errorNotifier.value = error.message;
+                    if (error is FirebaseAuthException) {
+                      errorNotifier.value = error.message;
+                    }
                   });
                 },
               ),
             ),
-            SizedBox(height: 10),
+            SizedBox(
+              height: 10,
+            ),
             ValueListenableBuilder<String>(
               valueListenable: errorNotifier,
               builder: (context, value, child) {
                 if (value.isEmpty) return SizedBox();
-                return Provider<String>.value(
-                  value: value,
-                  child: ErrorText(),
-                );
+                return Text(value);
               },
-            ),
+            )
           ],
         ),
       ),
     );
-  }
-}
-
-class ErrorText extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final value = Provider.of<String>(context);
-    return Text(value);
   }
 }
