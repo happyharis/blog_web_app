@@ -21,24 +21,13 @@ class HomePage extends StatelessWidget {
         appBar: AppBar(
           actions: [
             TextButton(
+              onPressed: () => Navigator.of(context).pushNamed('/store'),
               child: Text(
-                isUserLoggedIn ? '🚪' : '🔐',
+                '🛍',
                 style: TextStyle(fontSize: 30),
               ),
-              onPressed: () {
-                if (isUserLoggedIn) {
-                  FirebaseAuth.instance.signOut();
-                } else {
-                  // Login dialog
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return LoginDialog();
-                    },
-                  );
-                }
-              },
-            )
+            ),
+            LoginButton(isUserLoggedIn: isUserLoggedIn)
           ],
         ),
         children: [
@@ -80,5 +69,37 @@ class HomePage extends StatelessWidget {
                 },
               )
             : SizedBox());
+  }
+}
+
+class LoginButton extends StatelessWidget {
+  const LoginButton({
+    Key key,
+    @required this.isUserLoggedIn,
+  }) : super(key: key);
+
+  final bool isUserLoggedIn;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      child: Text(
+        isUserLoggedIn ? '🚪' : '🔐',
+        style: TextStyle(fontSize: 30),
+      ),
+      onPressed: () {
+        if (isUserLoggedIn) {
+          FirebaseAuth.instance.signOut();
+        } else {
+          // Login dialog
+          showDialog(
+            context: context,
+            builder: (context) {
+              return LoginDialog();
+            },
+          );
+        }
+      },
+    );
   }
 }

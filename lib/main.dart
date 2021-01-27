@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Dev Blog',
         theme: theme,
-        home: StorePage(),
+        home: HomePage(),
         routes: {
           '/store': (context) => StorePage(),
           '/checkout': (context) => CheckoutPage(),
