@@ -37,38 +37,42 @@ class LoginDialog extends StatelessWidget {
             ),
             SizedBox(
               width: double.infinity,
-              child: FlatButton(
+              child: TextButton(
                 child: Text(
                   'Login',
                   style: TextStyle(color: Colors.white),
                 ),
-                color: Colors.blueAccent,
+                style: TextButton.styleFrom(backgroundColor: Colors.blueAccent),
                 onPressed: () {
                   final email = emailController.text;
                   final password = passwordController.text;
                   if (email.isEmpty || password.isEmpty) {
-                    errorNotifier.value = 'Fill in the empty fields.';
+                    return errorNotifier.value = 'Fill in the empty fields.';
                   }
-                  return FirebaseAuth.instance
+                  FirebaseAuth.instance
                       .signInWithEmailAndPassword(
                         email: email,
                         password: password,
                       )
                       .then((_) => Navigator.of(context).pop())
                       .catchError((error) {
-                    errorNotifier.value = error.message;
+                    if (error is FirebaseAuthException) {
+                      errorNotifier.value = error.message;
+                    }
                   });
                 },
               ),
             ),
-            SizedBox(height: 10),
+            SizedBox(
+              height: 10,
+            ),
             ValueListenableBuilder<String>(
               valueListenable: errorNotifier,
               builder: (context, value, child) {
                 if (value.isEmpty) return SizedBox();
                 return Text(value);
               },
-            ),
+            )
           ],
         ),
       ),
