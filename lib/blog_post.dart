@@ -12,7 +12,7 @@ class BlogPost {
 
   BlogPost({this.title, this.publishedDate, this.body, this.id, this.isLiked});
 
-  factory BlogPost.fromDocument(DocumentSnapshot doc) {
+  factory BlogPost.fromDocument(DocumentSnapshot<Map<String, dynamic>> doc) {
     final map = doc?.data();
     if (map == null) return null;
 

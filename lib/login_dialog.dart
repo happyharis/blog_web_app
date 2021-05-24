@@ -38,12 +38,12 @@ class LoginDialog extends StatelessWidget {
             ),
             SizedBox(
               width: double.infinity,
-              child: FlatButton(
+              child: TextButton(
                 child: Text(
                   'Login',
                   style: TextStyle(color: Colors.white),
                 ),
-                color: Colors.blueAccent,
+                style: TextButton.styleFrom(primary: Colors.blue),
                 onPressed: () {
                   final email = emailController.text;
                   final password = passwordController.text;

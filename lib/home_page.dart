@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
     return BlogScaffold(
         appBar: AppBar(
           actions: [
-            FlatButton(
+            TextButton(
               child: Text(
                 isUserLoggedIn ? '🚪' : '🔐',
                 style: TextStyle(fontSize: 30),
