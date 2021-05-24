@@ -2,6 +2,7 @@ import 'package:blog_web_app/blog_entry_page.dart';
 import 'package:blog_web_app/blog_page.dart';
 import 'package:blog_web_app/blog_post.dart';
 import 'package:blog_web_app/like_notifier.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,22 +23,43 @@ class BlogListTile extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 20),
-            InkWell(
-              child: Text(
-                post.title,
-                style: TextStyle(color: Colors.blueAccent.shade700),
+            RichText(
+              text: TextSpan(
+                text: post.title,
+                // style: TextStyle(color: Colors.blueAccent.shade700),
+                style: Theme.of(context).textTheme.bodyText2.copyWith(
+                      color: Colors.blueAccent.shade700,
+                    ),
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return ChangeNotifierProvider.value(
+                              value: likeNotifier,
+                              child: BlogPage(blogPost: post));
+                        },
+                      ),
+                    );
+                  },
               ),
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return ChangeNotifierProvider.value(
-                          value: likeNotifier, child: BlogPage(blogPost: post));
-                    },
-                  ),
-                );
-              },
             ),
+            // InkWell(
+            //   child: Text(
+            //     post.title,
+            //     style: TextStyle(color: Colors.blueAccent.shade700),
+            //   ),
+            //   onTap: () {
+            //     Navigator.of(context).push(
+            //       MaterialPageRoute(
+            //         builder: (context) {
+            //           return ChangeNotifierProvider.value(
+            //               value: likeNotifier, child: BlogPage(blogPost: post));
+            //         },
+            //       ),
+            //     );
+            //   },
+            // ),
             SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -50,7 +72,7 @@ class BlogListTile extends StatelessWidget {
                 if (isUserLoggedIn) BlogPopUpMenuButton(post: post)
               ],
             ),
-            Divider(thickness: 2),
+            // Divider(thickness: 2),
           ],
         );
       },

@@ -10,6 +10,7 @@ class LoginDialog extends StatelessWidget {
     final errorNotifier = ValueNotifier<String>('');
     return Dialog(
       child: Container(
+        width: 612,
         padding: EdgeInsets.all(20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -38,12 +39,14 @@ class LoginDialog extends StatelessWidget {
             ),
             SizedBox(
               width: double.infinity,
-              child: TextButton(
+              child: ElevatedButton(
                 child: Text(
                   'Login',
-                  style: TextStyle(color: Colors.white),
                 ),
-                style: TextButton.styleFrom(primary: Colors.blue),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.blue,
+                  elevation: 0,
+                ),
                 onPressed: () {
                   final email = emailController.text;
                   final password = passwordController.text;

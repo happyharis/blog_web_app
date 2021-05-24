@@ -31,9 +31,7 @@ class HomePage extends StatelessWidget {
                   // Login dialog
                   showDialog(
                     context: context,
-                    builder: (context) {
-                      return LoginDialog();
-                    },
+                    builder: (context) => LoginDialog(),
                   );
                 }
               },
@@ -64,7 +62,14 @@ class HomePage extends StatelessWidget {
             'Blog',
             style: Theme.of(context).textTheme.headline2,
           ),
-          for (var post in posts) BlogListTile(post: post),
+          Expanded(
+            child: ListView.separated(
+              itemBuilder: (_, index) => BlogListTile(post: posts[index]),
+              separatorBuilder: (_, index) => Divider(thickness: 2),
+              itemCount: posts.length,
+            ),
+          )
+          // for (var post in posts) BlogListTile(post: post),
         ],
         floatingActionButton: isUserLoggedIn
             ? FloatingActionButton.extended(

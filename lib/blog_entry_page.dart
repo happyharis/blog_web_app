@@ -1,5 +1,6 @@
 import 'package:blog_web_app/blog_post.dart';
 import 'package:blog_web_app/blog_scaffold.dart';
+import 'package:blog_web_app/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -67,11 +68,14 @@ Future<void> handleBlogUpdate({
 }) async {
   final newMapPost = newPost.toMap();
   if (isEdit) {
-    await FirebaseFirestore.instance
-        .collection('blogs')
-        .doc(oldPost.id)
-        .update(newMapPost);
+    blogsRef.doc(oldPost.id).update(newMapPost);
+    // blogsRef.doc(oldPost.id).set(newPost);
+    // await FirebaseFirestore.instance
+    //     .collection('blogs')
+    //     .doc(oldPost.id)
+    //     .update(newMapPost);
   } else {
-    await FirebaseFirestore.instance.collection('blogs').add(newMapPost);
+    // await FirebaseFirestore.instance.collection('blogs').add(newMapPost);
+    await blogsRef.add(newPost);
   }
 }

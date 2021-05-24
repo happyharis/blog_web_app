@@ -76,3 +76,9 @@ Stream<List<BlogPost>> blogPosts() {
       });
   });
 }
+
+final blogsRef =
+    FirebaseFirestore.instance.collection('blogs').withConverter<BlogPost>(
+          fromFirestore: (snapshot, otions) => BlogPost.fromDocument(snapshot),
+          toFirestore: (blog, _) => blog.toMap(),
+        );
