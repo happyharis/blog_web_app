@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rxdart/streams.dart';
 
 import 'models/store_item.dart';
 import 'pages/checkout_page.dart';
@@ -39,55 +40,82 @@ void main() {
   runApp(MyApp());
 }
 
+final Stream<List<String>> combinedStream = CombineLatestStream.combine3(
+    blogPosts(), storeItemsStream(), commentsStream(), (
+  List<BlogPost> blogPosts,
+  List<QueryDocumentSnapshot> storeItems,
+  List<QueryDocumentSnapshot> comments,
+) {
+  final List<String> blogIds = List.generate(blogPosts.length, (index) {
+    return blogPosts[index].id;
+  });
+  final List<String> storeItemIds = List.generate(storeItems.length, (index) {
+    return storeItems[index].id;
+  });
+  print('Comments snapshots: $comments');
+  final commentsId = List.generate(comments.length, (index) {
+    return comments[index].id;
+  });
+  return blogIds + storeItemIds + commentsId;
+});
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        StreamProvider<User>(
-          create: (context) => FirebaseAuth.instance.authStateChanges(),
-        ),
-        StreamProvider<List<BlogPost>>(
-          initialData: [],
-          create: (context) => blogPosts(),
-        ),
-        ProxyProvider<User, BlogUser>(
-          create: (context) => BlogUser(
-            name: 'Flutter Dev',
-            profilePicture: 'https://i.ibb.co/ZKkSW4H/profile-image.png',
-            isLoggedIn: false,
-          ),
-          update: (context, firebaseUser, blogUser) => BlogUser(
-            name: blogUser.name,
-            profilePicture: blogUser.profilePicture,
-            isLoggedIn: firebaseUser != null,
-          ),
-        ),
-        StreamProvider<List<QueryDocumentSnapshot>>(
-          initialData: [],
-          create: (context) => storeItemsStream(),
-        ),
-        ChangeNotifierProxyProvider<List<QueryDocumentSnapshot>, CartNotifier>(
-          create: (context) => CartNotifier(),
-          update: (context, storeItemsDocs, cart) {
-            cart.catalog = storeItemsDocs.map((e) {
-              return StoreItem.fromDocument(e);
-            }).toList();
-            return cart;
-          },
-        )
-      ],
-      child: MaterialApp(
-        title: 'Flutter Dev Blog',
-        debugShowCheckedModeBanner: false,
-        theme: theme,
-        home: HomePage(),
-        routes: {
-          '/store': (context) => StorePage(),
-          '/checkout': (context) => CheckoutPage(),
-        },
-      ),
-    );
+    return StreamBuilder<List<String>>(
+        stream: combinedStream,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) print('Loading...');
+          if (snapshot.hasData) print(snapshot.data);
+          return MultiProvider(
+            providers: [
+              StreamProvider<User>(
+                create: (context) => FirebaseAuth.instance.authStateChanges(),
+                builder: (context, child) {},
+              ),
+              StreamProvider<List<BlogPost>>(
+                initialData: [],
+                create: (context) => blogPosts(),
+              ),
+              ProxyProvider<User, BlogUser>(
+                create: (context) => BlogUser(
+                  name: 'Flutter Dev',
+                  profilePicture: 'https://i.ibb.co/ZKkSW4H/profile-image.png',
+                  isLoggedIn: false,
+                ),
+                update: (context, firebaseUser, blogUser) => BlogUser(
+                  name: blogUser.name,
+                  profilePicture: blogUser.profilePicture,
+                  isLoggedIn: firebaseUser != null,
+                ),
+              ),
+              StreamProvider<List<QueryDocumentSnapshot>>(
+                initialData: [],
+                create: (context) => storeItemsStream(),
+              ),
+              ChangeNotifierProxyProvider<List<QueryDocumentSnapshot>,
+                  CartNotifier>(
+                create: (context) => CartNotifier(),
+                update: (context, storeItemsDocs, cart) {
+                  cart.catalog = storeItemsDocs.map((e) {
+                    return StoreItem.fromDocument(e);
+                  }).toList();
+                  return cart;
+                },
+              )
+            ],
+            child: MaterialApp(
+              title: 'Flutter Dev Blog',
+              debugShowCheckedModeBanner: false,
+              theme: theme,
+              home: HomePage(),
+              routes: {
+                '/store': (context) => StorePage(),
+                '/checkout': (context) => CheckoutPage(),
+              },
+            ),
+          );
+        });
   }
 }
 
@@ -112,6 +140,13 @@ Stream<List<QueryDocumentSnapshot>> storeItemsStream() {
       .map((snapshot) {
     return snapshot.docs;
   });
+}
+
+Stream<List<QueryDocumentSnapshot>> commentsStream() {
+  return FirebaseFirestore.instance
+      .collection('commentss')
+      .snapshots()
+      .map((snapshot) => snapshot.docs);
 }
 
 final _storeItems = [
